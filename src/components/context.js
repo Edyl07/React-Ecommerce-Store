@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {storeProducts, detailProduct } from "../data";
+import {detailProduct, storeProducts} from "../data";
 
 const ProductContext = React.createContext();
 //Provider
@@ -29,12 +29,17 @@ class ProductProvider extends Component {
         });
     }
 
-    handleDetails = () => {
-        console.log('Hello from details');
+    getItem = id => {
+        return this.state.products.find(item => item.id === id);
     }
 
-    addToCart = () => {
-        console.log('Hello from Cart');
+    handleDetails = (id) => {
+        const product = this.getItem(id);
+        this.setState(() => {return {detailProduct : product}})
+    }
+
+    addToCart = id => {
+        console.log(`hello from add to card.id is ${id}`);
     }
 
     // tester = () => {
@@ -54,7 +59,7 @@ class ProductProvider extends Component {
 
     render() {
         return (
-            <ProductContext.Provider value={{...this.state}}>
+            <ProductContext.Provider value={{...this.state, handleDetails : this.handleDetails, addToCart : this.addToCart}}>
                 {this.props.children}
             </ProductContext.Provider>
         );
